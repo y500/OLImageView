@@ -74,7 +74,6 @@ inline static BOOL isRetinaFilePath(NSString *path)
 
 @property (nonatomic, readwrite) NSTimeInterval *frameDurations;
 @property (nonatomic, readwrite) NSTimeInterval totalDuration;
-@property (nonatomic, readwrite) NSUInteger loopCount;
 @property (nonatomic, readwrite) CGImageSourceRef incrementalSource;
 @property (nonatomic, readwrite) OLImageSourceArray *imageSourceArray;
 
@@ -236,7 +235,10 @@ inline static BOOL isRetinaFilePath(NSString *path)
     NSDictionary *gifProperties = [imageProperties objectForKey:(NSString *)kCGImagePropertyGIFDictionary];
     
     self.frameDurations = (NSTimeInterval *)malloc(numberOfFrames  * sizeof(NSTimeInterval));
-    self.loopCount = [gifProperties[(NSString *)kCGImagePropertyGIFLoopCount] unsignedIntegerValue];
+    
+    //loopcount可以修改，默认为1
+    self.loopCount = 1;
+//    self.loopCount = [gifProperties[(NSString *)kCGImagePropertyGIFLoopCount] unsignedIntegerValue];
     for (NSUInteger i = 0; i < numberOfFrames; ++i) {
         NSTimeInterval frameDuration = CGImageSourceGetGifFrameDelay(imageSource, i);
         self.frameDurations[i] = frameDuration;
